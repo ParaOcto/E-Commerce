@@ -1,8 +1,12 @@
 package com.HCMUS.PHON.backend.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,12 +31,17 @@ public class products {
     private Long id;
     private String name;
     private String description;
-    private String image;
-    private int price;
+
+    @ElementCollection
+    private List<String> images;
+
+    private double price;
     private int quantity;
-    private Long categoryId;
-    private Long brandId;
+    private Long category_id;
+    private Long brand_id;
+
     // Date format: yyyy-MM-dd and automatic generation
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
