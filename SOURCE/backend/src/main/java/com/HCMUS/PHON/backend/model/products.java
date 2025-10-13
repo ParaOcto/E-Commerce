@@ -24,7 +24,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class products {
+public class Products {
     //Id automatic generation
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

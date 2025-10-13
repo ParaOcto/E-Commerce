@@ -11,7 +11,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
 @Service
-public class cloudinaryService {
+public class CloudinaryService {
     
     @Autowired
     private Cloudinary cloudinary;

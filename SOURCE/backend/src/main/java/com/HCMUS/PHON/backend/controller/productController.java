@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 // import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.HCMUS.PHON.backend.model.products;
+import com.HCMUS.PHON.backend.model.Products;
 import com.HCMUS.PHON.backend.service.cloudinaryService;
 import com.HCMUS.PHON.backend.service.productService;
 
 @RestController
 @RequestMapping("/api/products")
-public class productController {
+public class ProductController {
 
     @Autowired
     private productService productService;
@@ -32,7 +33,7 @@ public class productController {
     private cloudinaryService cloudinaryService;
 
     @PutMapping("/update")
-    public ResponseEntity<products> updateProduct(@RequestParam Long id,
+    public ResponseEntity<Products> updateProduct(@RequestParam Long id,
             @RequestParam String name,
             @RequestParam String description,
             @RequestParam List<MultipartFile> files,
@@ -46,7 +47,7 @@ public class productController {
             String url = cloudinaryService.uploadFile(file);
             urlImage.add(url);
         }        
-        products updatedProduct = new products();
+        Products updatedProduct = new Products();
         updatedProduct.setId(id);
         updatedProduct.setName(name);
         updatedProduct.setDescription(description);
@@ -56,7 +57,7 @@ public class productController {
         updatedProduct.setCategory(category);
         updatedProduct.setBrand(brand);
 
-        products product = productService.updateProduct(updatedProduct);
+        Products product = productService.updateProduct(updatedProduct);
         if (product != null) {
             return ResponseEntity.ok(product);
         } else {
@@ -66,7 +67,7 @@ public class productController {
     
     
     @PostMapping("/create")
-    public ResponseEntity<products> createProduct(@RequestParam String name,
+    public ResponseEntity<Products> createProduct(@RequestParam String name,
             @RequestParam String description,
             @RequestParam List<MultipartFile> files,
             @RequestParam double price,
@@ -80,7 +81,7 @@ public class productController {
             String url = cloudinaryService.uploadFile(file);
             urlImage.add(url);
         }        
-        products newProduct = new products();
+        Products newProduct = new Products();
         newProduct.setName(name);
         newProduct.setDescription(description);
         newProduct.setImages(urlImage);
@@ -89,18 +90,18 @@ public class productController {
         newProduct.setCategory(category);
         newProduct.setBrand(brand);
 
-        products createdProduct = productService.createProduct(newProduct);
+        Products createdProduct = productService.createProduct(newProduct);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<products>> getAllProducts() {
+    public ResponseEntity<List<Products>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<products>> getProductByName(@RequestParam String keyword) {
-        List<products> product = productService.findProductsByName(keyword);
+    public ResponseEntity<List<Products>> getProductByName(@RequestParam String keyword) {
+        List<Products> product = productService.findProductsByName(keyword);
         if (!product.isEmpty()) {
             return ResponseEntity.ok(product);
         } else {
@@ -109,8 +110,8 @@ public class productController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<products> getProductById(@PathVariable Long id) {
-        products product = productService.getProductById(id);
+    public ResponseEntity<Products> getProductById(@PathVariable Long id) {
+        Products product = productService.getProductById(id);
         if (product != null) {
             return ResponseEntity.ok(product);
         } else {
@@ -118,9 +119,16 @@ public class productController {
         }
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteProductById(@PathVariable Long id){
-        productService.deleteProduct(id);
-        return ResponseEntity.ok("Delete successfully");
+        if (productService.getProductById(id) == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        }
+        else{
+            productService.deleteProduct(id);
+            return ResponseEntity.ok("Delete successfully");
+        }
     }
+
+    
 }

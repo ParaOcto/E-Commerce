@@ -5,23 +5,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.HCMUS.PHON.backend.model.users;
-import com.HCMUS.PHON.backend.repository.userRepo;
+import com.HCMUS.PHON.backend.model.Users;
+import com.HCMUS.PHON.backend.repository.UserRepo;
 
 @Service
-public class userService {
+public class UserService {
     @Autowired
-    private userRepo userRepository;
+    private UserRepo userRepository;
 
-    List<users> getAllUsers(){
+    List<Users> getAllUsers(){
         return userRepository.findAll();
     }
 
-    users createUser(users user){
+    Users createUser(Users user){
         return userRepository.save(user);
     }
 
-    users getUserById(Long id){
+    Users getUserById(Long id){
         return userRepository.findById(id).orElse(null);
     }
 
@@ -29,7 +29,9 @@ public class userService {
         userRepository.deleteById(id);
     }
 
-    users findByUsername(String username){
+    Users findByUsername(String username){
         return userRepository.findByUsername(username);
     }
+
+    
 }

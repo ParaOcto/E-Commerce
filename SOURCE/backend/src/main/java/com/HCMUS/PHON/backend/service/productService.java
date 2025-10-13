@@ -5,34 +5,34 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.HCMUS.PHON.backend.model.products;
-import com.HCMUS.PHON.backend.repository.productRepo;
+import com.HCMUS.PHON.backend.model.Products;
+import com.HCMUS.PHON.backend.repository.ProductRepo;
 
 @Service
-public class productService {
+public class ProductService {
     @Autowired
-    private productRepo productRepo;
+    private ProductRepo productRepo;
 
-    public List<products> getAllProducts(){
+    public List<Products> getAllProducts(){
         return productRepo.findAll();
     }
 
-    public products createProduct(products product){
+    public Products createProduct(Products product){
         return productRepo.save(product);
     }
-    public products getProductById(Long id){
+    public Products getProductById(Long id){
         return productRepo.findById(id).orElse(null);
     }
     public void deleteProduct(Long id){
         productRepo.deleteById(id);
     }
-    public List<products> findProductsByName(String keyword){
+    public List<Products> findProductsByName(String keyword){
         return productRepo.findByNameContainingIgnoreCase(keyword);
     }
     
-    public products updateProduct(products updatedProduct){
+    public Products updateProduct(Products updatedProduct){
         Long id = updatedProduct.getId();
-        products existingProduct = productRepo.findById(id).orElse(null);
+        Products existingProduct = productRepo.findById(id).orElse(null);
         if (existingProduct != null) {
             existingProduct.setName(updatedProduct.getName());
             existingProduct.setDescription(updatedProduct.getDescription());

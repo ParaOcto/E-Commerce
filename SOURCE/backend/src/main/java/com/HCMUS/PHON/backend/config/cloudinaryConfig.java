@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import com.cloudinary.Cloudinary;
 
 @Configuration
-public class cloudinaryConfig {
+public class CloudinaryConfig {
     @Value("${CLOUDINARY_CLOUD_NAME}")
     private String cloudName;
     @Value("${CLOUDINARY_API_KEY}")
