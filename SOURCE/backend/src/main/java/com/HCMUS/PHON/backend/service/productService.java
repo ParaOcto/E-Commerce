@@ -30,4 +30,20 @@ public class productService {
         return productRepo.findByNameContainingIgnoreCase(keyword);
     }
     
+    public products updateProduct(products updatedProduct){
+        Long id = updatedProduct.getId();
+        products existingProduct = productRepo.findById(id).orElse(null);
+        if (existingProduct != null) {
+            existingProduct.setName(updatedProduct.getName());
+            existingProduct.setDescription(updatedProduct.getDescription());
+            existingProduct.setImages(updatedProduct.getImages());
+            existingProduct.setPrice(updatedProduct.getPrice());
+            existingProduct.setQuantity(updatedProduct.getQuantity());
+            existingProduct.setCategory(updatedProduct.getCategory());
+            existingProduct.setBrand(updatedProduct.getBrand());
+            return productRepo.save(existingProduct);
+        } else {
+            return null; // Or throw an exception if preferred
+        }
+    }
 }

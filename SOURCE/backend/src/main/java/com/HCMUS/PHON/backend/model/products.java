@@ -37,8 +37,8 @@ public class products {
 
     private double price;
     private int quantity;
-    private Long category_id;
-    private Long brand_id;
+    private List<String> category;
+    private String brand;
 
     // Date format: yyyy-MM-dd and automatic generation
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
