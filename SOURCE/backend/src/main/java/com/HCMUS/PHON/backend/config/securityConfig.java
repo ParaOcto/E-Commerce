@@ -10,27 +10,38 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@AllArgsConstructor
+@NoArgsConstructor
 public class SecurityConfig {
-
     @Autowired
-    private UserDetailsService  
+    private UserDetailsService userDetailsService;   
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.set
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+        provider.setUserDetailsService(userDetailsService);
+        return provider;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
             .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+            .authorizeHttpRequests(request -> request
+                .requestMatchers("/api/users/**").permitAll() 
+                .anyRequest().authenticated())
             .httpBasic(Customizer.withDefaults())
             .sessionManagement(session 
                 -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
