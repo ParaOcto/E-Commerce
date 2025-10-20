@@ -1,6 +1,6 @@
 package com.HCMUS.PHON.backend.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Table(name = "products")
 public class Products {
     //Id automatic generation
     @Id
@@ -37,18 +39,20 @@ public class Products {
 
     private double price;
     private int quantity;
+
+    @ElementCollection
     private List<String> category;
     private String brand;
 
     // Date format: yyyy-MM-dd and automatic generation
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @Column(updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
   
     @PrePersist
     public void setCreatedAt() {
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = LocalDate.now();
     }
 
     

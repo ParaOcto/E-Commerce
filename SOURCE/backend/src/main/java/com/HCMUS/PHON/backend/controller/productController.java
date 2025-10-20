@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.HCMUS.PHON.backend.model.Products;
-import com.HCMUS.PHON.backend.service.cloudinaryService;
-import com.HCMUS.PHON.backend.service.productService;
+import com.HCMUS.PHON.backend.service.CloudinaryService;
+import com.HCMUS.PHON.backend.service.ProductService;
 
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
     @Autowired
-    private productService productService;
+    private ProductService productService;
 
     @Autowired
-    private cloudinaryService cloudinaryService;
+    private CloudinaryService cloudinaryService;
 
     @PutMapping("/update")
     public ResponseEntity<Products> updateProduct(@RequestParam Long id,
