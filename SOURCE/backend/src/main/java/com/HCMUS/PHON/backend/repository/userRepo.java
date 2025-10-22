@@ -9,4 +9,5 @@ import com.HCMUS.PHON.backend.model.Users;
 public interface UserRepo extends JpaRepository<Users, Long> {
     Users findByUsername(String username);
 
+
 } 

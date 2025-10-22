@@ -29,6 +29,10 @@ public class ProductService {
     public List<Products> findProductsByName(String keyword){
         return productRepo.findByNameContainingIgnoreCase(keyword);
     }
+
+    public List<Products> filterProductByCategory(List<String> categories){
+        return productRepo.findByCategoryIn(categories);
+    }
     
     public Products updateProduct(Products updatedProduct){
         Long id = updatedProduct.getId();

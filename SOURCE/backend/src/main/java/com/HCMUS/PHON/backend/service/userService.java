@@ -29,7 +29,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Users createUser(Users user){
+    public Users createUser(Users user) {
+        Users existingUser = userRepository.findByUsername(user.getUsername());
+        if (existingUser != null) {
+            return null;
+        }
+
         user.setPassword_hashed(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

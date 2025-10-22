@@ -75,7 +75,6 @@ public class ProductController {
             @RequestParam List<String> category,
             @RequestParam String brand) {
 
-
         List<String> urlImage = new ArrayList<>();
         for (MultipartFile file: files){
             String url = cloudinaryService.uploadFile(file);
@@ -109,6 +108,16 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/filtering")
+    public ResponseEntity<List<Products>> getFilteredProductByCategory(@RequestParam List<String> categories){
+        List<Products> product = productService.filterProductByCategory(categories);
+        if (!product.isEmpty()) {
+            return ResponseEntity.ok(product);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
     @GetMapping("/get/{id}")
     public ResponseEntity<Products> getProductById(@PathVariable Long id) {
         Products product = productService.getProductById(id);
@@ -129,6 +138,8 @@ public class ProductController {
             return ResponseEntity.ok("Delete successfully");
         }
     }
+
+    
 
     
 }

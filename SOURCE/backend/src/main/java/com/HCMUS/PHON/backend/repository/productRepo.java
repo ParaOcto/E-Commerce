@@ -10,4 +10,6 @@ import com.HCMUS.PHON.backend.model.Products;
 @Repository
 public interface ProductRepo extends JpaRepository<Products, Long> {
     public List<Products> findByNameContainingIgnoreCase(String keyword);
+    public List<Products> findByCategoryIn(List<String> categories);
+
 }
