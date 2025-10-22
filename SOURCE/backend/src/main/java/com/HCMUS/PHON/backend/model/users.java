@@ -29,7 +29,7 @@ public class Users {
     private String password_hashed;
     private String email;
     private String role;
-    private LocalDate created_at;
+    private LocalDate created_at = LocalDate.now();
 
     @JsonIgnore
     public String getPassword() {
