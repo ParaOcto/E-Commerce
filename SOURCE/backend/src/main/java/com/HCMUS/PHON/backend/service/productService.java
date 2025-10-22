@@ -33,6 +33,10 @@ public class ProductService {
     public List<Products> filterProductByCategory(List<String> categories){
         return productRepo.findByCategoryIn(categories);
     }
+
+    public List<Products> filterProductByPriceRange(double minPrice, double maxPrice){
+        return productRepo.findByPriceBetween(minPrice, maxPrice);
+    }
     
     public Products updateProduct(Products updatedProduct){
         Long id = updatedProduct.getId();

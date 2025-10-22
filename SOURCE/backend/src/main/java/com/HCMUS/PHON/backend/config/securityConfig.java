@@ -52,7 +52,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/users/**").permitAll() 
-                .requestMatchers("/api/products/all", "/api/products/search", "/api/products/filtering").permitAll()
+                .requestMatchers("/api/products/all", "/api/products/search", "/api/products/filtering", "api/products/price").permitAll()
                 .requestMatchers("/api/products/**").hasRole("Admin")
                 .anyRequest().authenticated())
             .httpBasic(Customizer.withDefaults())

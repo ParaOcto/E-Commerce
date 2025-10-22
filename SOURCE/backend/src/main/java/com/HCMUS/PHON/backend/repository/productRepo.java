@@ -11,5 +11,6 @@ import com.HCMUS.PHON.backend.model.Products;
 public interface ProductRepo extends JpaRepository<Products, Long> {
     public List<Products> findByNameContainingIgnoreCase(String keyword);
     public List<Products> findByCategoryIn(List<String> categories);
+    List<Products> findByPriceBetween(double minPrice, double maxPrice);
 
 }

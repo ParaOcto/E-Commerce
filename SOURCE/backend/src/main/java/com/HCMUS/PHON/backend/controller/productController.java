@@ -117,6 +117,18 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+    @GetMapping("/price")
+    public ResponseEntity<List<Products>> getFilteredProductByPriceRange(
+            @RequestParam double minPrice,
+            @RequestParam double maxPrice){
+        
+        List<Products> products = productService.filterProductByPriceRange(minPrice, maxPrice);
+        if (!products.isEmpty()) {
+            return ResponseEntity.ok(products);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<Products> getProductById(@PathVariable Long id) {
