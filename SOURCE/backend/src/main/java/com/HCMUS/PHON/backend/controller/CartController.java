@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.HCMUS.PHON.backend.dto.AddItemRequest;
+import com.HCMUS.PHON.backend.dto.DeleteItemRequest;
 import com.HCMUS.PHON.backend.model.Cart;
 import com.HCMUS.PHON.backend.model.Users;
 import com.HCMUS.PHON.backend.repository.UserRepo;
@@ -55,5 +57,20 @@ public class CartController {
         
         return ResponseEntity.ok(cart);
 
+    }
+
+    @DeleteMapping("/delete/all")
+    public ResponseEntity<String> deleteItem(@RequestBody DeleteItemRequest deleteItemRequest){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String name = authentication.getName();
+
+        Users user =  userRepo.findByUsername(name);
+        if (user == null){
+            return null;
+        }
+
+        cartService.deleteItem(user.getId(), deleteItemRequest.getProductId());
+        return ResponseEntity.ok("Item deleted");
     }
 }

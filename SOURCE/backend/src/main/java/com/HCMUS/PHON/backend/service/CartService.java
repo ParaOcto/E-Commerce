@@ -14,6 +14,8 @@ import com.HCMUS.PHON.backend.repository.CartRepo;
 import com.HCMUS.PHON.backend.repository.ProductRepo;
 import com.HCMUS.PHON.backend.repository.UserRepo;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CartService {
     @Autowired
@@ -55,6 +57,10 @@ public class CartService {
         
         Optional<Products> product = productRepo.findById(productId);
 
+        if (quantity > product.get().getQuantity()) {
+            throw new RuntimeException("Not enough stock available for product: " + product.get().getName());
+        }
+
         //Check if item is already in the cart
         CartItem existingItem = cartOpt.get().getItems().stream()
                 .filter(i -> i.getProduct().getId().equals(productId))
@@ -75,7 +81,7 @@ public class CartService {
             cartItemRepo.save(newItem);
 
         }
-        // ✅ Recalculate total
+        // Recalculate total
         double totalAmount = cartOpt.get().getItems().stream()
                 .mapToDouble(CartItem::getTotalPrice)
                 .sum();
@@ -86,5 +92,33 @@ public class CartService {
 
     }
 
-     
+    @Transactional
+    public void deleteItem(Long userId, Long productId){
+        Optional<Users> user = userRepo.findById(userId);
+        if (user.isEmpty()){
+            return;
+        }
+        Optional<Cart> cartOpt = cartRepo.findByUser(user.get());
+
+        Cart cart = cartOpt.get();
+
+        CartItem existingItem = cart.getItems().stream()
+                .filter(i -> i.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElse(null);
+
+        if (existingItem == null) {
+            return;
+        }
+
+        cart.getItems().remove(existingItem);
+
+        double newTotal = cart.getItems().stream()
+                .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
+                .sum();
+        cart.setTotalAmount(newTotal);
+
+        cartRepo.save(cart);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.HCMUS.PHON.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -30,6 +31,7 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
     @JsonIgnore
+    @JsonBackReference
     private Cart cart;
 
     @ManyToOne
