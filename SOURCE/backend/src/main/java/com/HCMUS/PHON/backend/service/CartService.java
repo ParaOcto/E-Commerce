@@ -121,4 +121,33 @@ public class CartService {
         cartRepo.save(cart);
     }
 
+    @Transactional
+    public void updateQuantity(Long userId, Long productId, int quantity){
+        Optional<Users> user = userRepo.findById(userId);
+        if (user.isEmpty()){
+            return;
+        }
+        Optional<Cart> cartOpt = cartRepo.findByUser(user.get());
+
+        Cart cart = cartOpt.get();
+
+        CartItem existingItem = cart.getItems().stream()
+                .filter(i -> i.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElse(null);
+
+        if (existingItem == null) {
+            return;
+        }
+
+        existingItem.setQuantity(quantity);
+
+        double newTotal = cart.getItems().stream()
+                .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
+                .sum();
+        cart.setTotalAmount(newTotal);
+
+        cartRepo.save(cart);
+    }
+
 }
