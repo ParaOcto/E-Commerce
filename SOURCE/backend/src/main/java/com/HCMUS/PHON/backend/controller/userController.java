@@ -1,6 +1,7 @@
 package com.HCMUS.PHON.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,14 +17,19 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public Users register(@RequestBody Users user){
         return service.createUser(user);
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public String login(@RequestBody Users user){
         return service.verify(user);
+    }
+
+    @GetMapping("/all")
+    public Iterable<Users> getAllUsers(){
+        return service.getAllUsers();
     }
 
 }

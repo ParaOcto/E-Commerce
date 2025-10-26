@@ -1,5 +1,6 @@
 package com.HCMUS.PHON.backend.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +61,15 @@ public class OrderService {
         cartRepo.save(cart);
 
         return Optional.of(savOrder);
+    }
+
+    public List<Order> getOrdersByUser(String username) {
+        Users user = userRepo.findByUsername(username);
+
+        if (user == null){
+            throw new RuntimeException("User not found");
+        }
+
+        return orderRepo.findByUser(user);
     }
 }
