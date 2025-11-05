@@ -1,6 +1,8 @@
 package com.HCMUS.PHON.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +32,10 @@ public class UserController {
     @GetMapping("/all")
     public Iterable<Users> getAllUsers(){
         return service.getAllUsers();
+    }
+    @GetMapping("/test-role")
+    public ResponseEntity<?> testRole(Authentication authentication) {
+        return ResponseEntity.ok(authentication.getAuthorities());
     }
 
 }

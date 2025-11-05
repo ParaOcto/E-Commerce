@@ -53,4 +53,10 @@ public class OrderController {
         List<Order> orders = orderService.getOrdersByUser(username);
         return ResponseEntity.ok(orders);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Order>> getAllOrders(){
+        List<Order> orders = orderService.getAllOrders();
+        return ResponseEntity.ok(orders);
+    }
 }

@@ -72,4 +72,8 @@ public class OrderService {
 
         return orderRepo.findByUser(user);
     }
+
+    public List<Order> getAllOrders() {
+        return orderRepo.findAll();
+    }
 }
